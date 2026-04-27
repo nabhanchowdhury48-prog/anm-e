@@ -1,0 +1,87 @@
+-- Nabhan FTAP Hub - Rayfield with Platoboost Key System
+local Rayfield = loadstring(game:HttpGet('https://sirius.menu/rayfield'))()
+
+-- ==================== PLATOBOOST KEY SYSTEM ====================
+local PlatoboostLink = "https://gateway.platoboost.com/a/YOUR_PLATOBOOST_ID_HERE"  -- ← CHANGE THIS TO YOUR PLATOBOOST LINK
+
+local Window = Rayfield:CreateWindow({
+   Name = "Nabhan • FTAP Hub",
+   LoadingTitle = "Key System Loading...",
+   LoadingSubtitle = "Platoboost Protected",
+   KeySystem = true,
+   KeySettings = {
+      Title = "Nabhan FTAP Key",
+      Subtitle = "Complete Platoboost to get key",
+      Note = "Get Key → " .. PlatoboostLink,
+      FileName = "NabhanFTAPKey",
+      SaveKey = true,
+      GrabKeyFromSite = false,   -- Set to true if you have a direct key API
+      Key = {"nabhanftap2026"}   -- Fallback key if you want
+   }
+})
+
+-- Welcome Notification (on-screen)
+Rayfield:Notify({
+   Title = "✅ Hub Loaded",
+   Content = "Platoboost key accepted! Welcome to FTAP Hub",
+   Duration = 8,
+})
+
+-- ==================== MAIN TAB ====================
+local MainTab = Window:CreateTab("Main")
+MainTab:CreateButton({
+   Name = "Infinite Yield",
+   Callback = function()
+      loadstring(game:HttpGet('https://raw.githubusercontent.com/EdgeIY/infiniteyield/master/source'))()
+   end
+})
+
+-- ==================== ATTACK TAB ====================
+local AttackTab = Window:CreateTab("Attack")
+AttackTab:CreateToggle({ Name = "Kill Aura", CurrentValue = false, Callback = function(v) print("Kill Aura:", v) end })
+AttackTab:CreateToggle({ Name = "Fling Aura", CurrentValue = false, Callback = function(v) print("Fling Aura:", v) end })
+
+-- ==================== VISUALS TAB ====================
+local VisualsTab = Window:CreateTab("Visuals")
+VisualsTab:CreateToggle({ Name = "Player ESP", CurrentValue = false, Callback = function(v) print("ESP:", v) end })
+VisualsTab:CreateToggle({ Name = "Fling Trail", CurrentValue = false, Callback = function(v) print("Trail:", v) end })
+
+-- ==================== TELEPORT TAB ====================
+local TeleTab = Window:CreateTab("Teleport")
+TeleTab:CreateButton({
+   Name = "Teleport to Nearest Player",
+   Callback = function()
+      local lp = game.Players.LocalPlayer
+      local closest, dist = nil, math.huge
+      for _, p in pairs(game.Players:GetPlayers()) do
+         if p \~= lp and p.Character and p.Character:FindFirstChild("HumanoidRootPart") then
+            local d = (lp.Character.HumanoidRootPart.Position - p.Character.HumanoidRootPart.Position).Magnitude
+            if d < dist then dist = d; closest = p end
+         end
+      end
+      if closest then lp.Character.HumanoidRootPart.CFrame = closest.Character.HumanoidRootPart.CFrame + Vector3.new(0,5,0) end
+   end
+})
+
+-- ==================== OP TAB ====================
+local OPTab = Window:CreateTab("OP")
+OPTab:CreateToggle({ Name = "God Mode", CurrentValue = false, Callback = function(v) print("God Mode:", v) end })
+OPTab:CreateToggle({ Name = "Anti-Grab", CurrentValue = false, Callback = function(v) print("Anti-Grab:", v) end })
+
+-- ==================== BACKDOOR TAB ====================
+local BackdoorTab = Window:CreateTab("Backdoor")
+BackdoorTab:CreateButton({
+   Name = "Execute Fat Backdoor",
+   Callback = function()
+      local name = game.Players.LocalPlayer.Name
+      Rayfield:Notify({ Title = "Backdoor", Content = "Executing fat('"..name.."')...", Duration = 4 })
+      local s, e = pcall(function() require(14940596979).fat(name) end)
+      if s then
+         Rayfield:Notify({ Title = "✅ Success", Content = "Fat Backdoor executed!", Duration = 8 })
+      else
+         Rayfield:Notify({ Title = "❌ Failed", Content = "Error: "..tostring(e), Duration = 6 })
+      end
+   end
+})
+
+print("✅ Nabhan FTAP Hub with Platoboost Key loaded")
